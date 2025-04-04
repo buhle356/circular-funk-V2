@@ -5,10 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Circular Funk</title>
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
+      background-color: #ffe5b4; /* light orange */
       font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-      background-color: white;
       color: #333;
       overflow-x: hidden;
       min-height: 100vh;
@@ -191,7 +190,7 @@
   </style>
 </head>
 <body>
-  <!-- Background Video -->
+  <!-- Hintergrundvideo -->
   <video autoplay loop muted playsinline id="bg-video">
     <source src="public/animation.webm" type="video/webm">
     Your browser does not support the video tag.
@@ -258,4 +257,92 @@
 
   <script src="https://player.twitch.tv/js/embed/v1.js"></script>
   <script>
-    let twitch
+    let twitchInitialized = false;
+
+    function toggleSearch() {
+      const input = document.querySelector('.search-input');
+      const bar = document.querySelector('.search-bar');
+      bar.style.display = 'none';
+      input.style.display = 'block';
+      input.focus();
+    }
+    function hideSearch() {
+      const input = document.querySelector('.search-input');
+      const bar = document.querySelector('.search-bar');
+      input.style.display = 'none';
+      bar.style.display = 'block';
+    }
+
+    function showTab(id) {
+      document.querySelectorAll('.content-container').forEach(el => el.style.display = 'none');
+      document.getElementById('formBox').style.display = 'none';
+      const target = document.getElementById(id);
+      if (target) target.style.display = 'block';
+    }
+    function showTwitchStream() {
+      showTab('twitchStream');
+      if (!twitchInitialized) {
+        new Twitch.Embed("twitchEmbed", {
+          width: "100%",
+          height: "100%",
+          channel: "circular_funk",
+          autoplay: true
+        });
+        twitchInitialized = true;
+      }
+    }
+    function showContributeForm() {
+      document.querySelectorAll('.content-container').forEach(el => el.style.display = 'none');
+      document.getElementById('formBox').style.display = 'block';
+    }
+    function showCalendar() { showTab('calendarModal'); generateCalendar(); }
+    function showArchive() { showTab('archiveContainer'); }
+    function showMusic() { showTab('musicContainer'); }
+
+    function generateCalendar() {
+      const daysContainer = document.getElementById("calendarDays");
+      const header = document.getElementById("calendarMonthYear");
+      const date = new Date();
+      const month = date.getMonth();
+      const year = date.getFullYear();
+      const today = date.getDate();
+      const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+      header.textContent = `${monthNames[month]} ${year}`;
+      const firstDay = new Date(year, month, 1).getDay();
+      const totalDays = new Date(year, month + 1, 0).getDate();
+      daysContainer.innerHTML = "";
+      for (let i = 0; i < firstDay; i++) {
+        daysContainer.innerHTML += `<div class='calendar-cell'></div>`;
+      }
+      for (let d = 1; d <= totalDays; d++) {
+        const isToday = d === today ? 'today' : '';
+        daysContainer.innerHTML += `<div class='calendar-cell ${isToday}'>${d}</div>`;
+      }
+    }
+
+    // Webradio Player Functionality
+    const audio = document.getElementById("webradio");
+    const playButton = document.getElementById("playButton");
+    const trackInfo = document.getElementById("trackInfo");
+    playButton.addEventListener("click", () => {
+      if (audio.paused) {
+        audio.play();
+        playButton.textContent = "⏸ Pause";
+      } else {
+        audio.pause();
+        playButton.textContent = "▶️ Play";
+      }
+    });
+    fetch("https://api.laut.fm/station/circularfunk/current_song")
+      .then(res => res.json())
+      .then(data => {
+        if (data && data.title && data.artist) {
+          trackInfo.textContent = `${data.artist} – ${data.title}`;
+        }
+      })
+      .catch(() => {
+        trackInfo.textContent = "Currently streaming...";
+      });
+  </script>
+</body>
+</html>
