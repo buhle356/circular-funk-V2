@@ -131,6 +131,37 @@
       z-index: 100;
     }
 
+    /* Formular Styling */
+    #formBox {
+      background: white;
+      padding: 2rem;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      width: 100%;
+      margin: 2rem auto;
+    }
+
+    #formBox input,
+    #formBox textarea,
+    #formBox select {
+      width: 100%;
+      margin-bottom: 1rem;
+      padding: 0.5rem;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+    }
+
+    #formBox button {
+      width: 100%;
+      background: black;
+      color: white;
+      padding: 0.5rem;
+      border: none;
+      border-radius: 6px;
+      font-weight: bold;
+    }
+
+    /* Kalender Styling */
     .calendar-header {
       text-align: center;
       font-size: 1.5rem;
@@ -158,34 +189,25 @@
       font-weight: bold;
     }
 
-    #formBox {
-      background: white;
-      padding: 2rem;
-      border-radius: 12px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-      width: 50%;
-      margin: 2rem auto;
-      display: none;
-    }
-
-    #formBox input,
-    #formBox textarea,
-    #formBox select {
-      width: 100%;
-      margin-bottom: 1rem;
-      padding: 0.5rem;
-      border: 1px solid #ccc;
-      border-radius: 6px;
-    }
-
-    #formBox button {
-      width: 100%;
-      background: black;
+    /* Web Radio Styling */
+    .webradio-player {
+      background: #000;
       color: white;
-      padding: 0.5rem;
+      padding: 20px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 1.1rem;
+    }
+
+    .webradio-player button {
+      background: #ffff00;
       border: none;
-      border-radius: 6px;
+      padding: 0.5rem 1rem;
       font-weight: bold;
+      cursor: pointer;
+      border-radius: 8px;
     }
   </style>
 </head>
@@ -222,8 +244,9 @@
     <div class="tab-button" onclick="showTab('music')">Music</div>
   </div>
 
-  <!-- Magazin Tab mit Contribute Form -->
+  <!-- Content Container -->
   <div class="content-container" id="magazin">
+    <!-- Contribution Form -->
     <div id="formBox">
       <h4>New Contribution</h4>
       <input type="text" placeholder="Title">
@@ -240,25 +263,29 @@
     </div>
   </div>
 
-  <!-- Live (Twitch) -->
+  <!-- Live (Twitch Integration) -->
   <div class="content-container" id="live">
     <iframe width="100%" height="100%" src="https://player.twitch.tv/?channel=circular_funk&parent=localhost" frameborder="0" allowfullscreen></iframe>
   </div>
 
-  <!-- Events (Kalender) -->
+  <!-- Events (Calendar) -->
   <div class="content-container" id="events">
     <div class="calendar-header" id="calendarMonthYear"></div>
     <div class="calendar-grid" id="calendarDays"></div>
   </div>
 
-  <!-- Archive (YouTube) - Latest Video -->
+  <!-- Archive (YouTube) -->
   <div class="content-container" id="archive">
     <iframe class="youtube-container" width="100%" height="100%" src="https://www.youtube.com/embed/VIDEO_ID_HERE" frameborder="0" allowfullscreen></iframe>
   </div>
 
-  <!-- Music -->
+  <!-- Music (Web Radio) -->
   <div class="content-container" id="music">
-    <p style="text-align:center;">🎶 Music-Inhalt</p>
+    <div class="webradio-player">
+      <button id="playButton">▶️ Play</button>
+      <span id="trackInfo">Loading track info...</span>
+      <audio id="webradio" src="https://stream.laut.fm/circularfunk" preload="none"></audio>
+    </div>
   </div>
 
   <!-- JS für Tabs und Kalender -->
@@ -293,32 +320,4 @@
       const month = date.getMonth();
       const year = date.getFullYear();
       const today = date.getDate();
-      const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-      header.textContent = `${monthNames[month]} ${year}`;
-      const firstDay = new Date(year, month, 1).getDay();
-      const totalDays = new Date(year, month + 1, 0).getDate();
-      daysContainer.innerHTML = "";
-      for (let i = 0; i < firstDay; i++) {
-        daysContainer.innerHTML += `<div class='calendar-cell'></div>`;
-      }
-      for (let d = 1; d <= totalDays; d++) {
-        const isToday = d === today ? 'today' : '';
-        daysContainer.innerHTML += `<div class='calendar-cell ${isToday}'>${d}</div>`;
-      }
-    }
-
-    // YouTube API for Latest Video
-    const youtubeChannelId = 'UC_CHANNEL_ID'; // Replace with actual Channel ID
-    fetch(`https://www.googleapis.com/youtube/v3/search?key=YOUR_API_KEY&channelId=${youtubeChannelId}&order=date&part=snippet`)
-      .then(response => response.json())
-      .then(data => {
-        const latestVideoId = data.items[0].id.videoId;
-        const youtubeIframe = document.querySelector('#archive iframe');
-        youtubeIframe.src = `https://www.youtube.com/embed/${latestVideoId}`;
-      })
-      .catch(error => {
-        console.error('Error fetching YouTube video:', error);
-      });
-  </script>
-</body>
-</html>
+      const monthNames = ["January", "February", "March", "April", "May", "June
