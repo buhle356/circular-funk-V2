@@ -1,0 +1,215 @@
+* { 
+  margin: 0; 
+  padding: 0; 
+  box-sizing: border-box; 
+}
+
+body {
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  background-color: white;
+  color: #333;
+  overflow-x: hidden;
+  min-height: 100vh;
+  padding-bottom: 5rem;
+}
+
+.animation-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  overflow: hidden;
+}
+
+.background-animation {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.ticker-bar {
+  margin-top: 4.5rem;
+  width: 100%;
+  background-color: #ffff00;
+  z-index: 999;
+  height: 2rem;
+  overflow: hidden;
+}
+
+.ticker-text {
+  display: inline-block;
+  white-space: nowrap;
+  padding-left: 100%;
+  animation: ticker 15s linear infinite;
+  font-weight: bold;
+  font-size: 1rem;
+  color: black;
+}
+
+@keyframes ticker {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-100%); }
+}
+
+.title {
+  margin: 1rem;
+  font-size: 2.5rem;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.top-right {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.search-bar {
+  cursor: pointer;
+  color: #888;
+  font-style: italic;
+}
+
+.search-input {
+  display: none;
+  padding: 6px 10px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+}
+
+.instagram-icon {
+  width: 30px;
+  height: 30px;
+  fill: black;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.instagram-icon:hover {
+  transform: scale(1.2);
+}
+
+.tabs {
+  margin-top: 7rem;
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  font-size: 1.2rem;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.tab-button {
+  padding: 10px 20px;
+  border: 2px solid black;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: 0.3s ease;
+  background: rgba(255, 255, 255, 0.8);
+}
+
+.tab-button:hover {
+  background: black;
+  color: white;
+  transform: scale(1.05);
+}
+
+.content-container {
+  display: none;
+  margin-top: 2rem;
+  width: 80%;
+  aspect-ratio: 16 / 9;
+  margin-left: auto;
+  margin-right: auto;
+  position: relative;
+  z-index: 100;
+}
+
+#twitchEmbed, .youtube-container {
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+
+#formBox {
+  background: rgba(255, 255, 255, 0.9);
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  width: 50%;
+  margin: 2rem auto;
+  display: none;
+}
+
+#formBox input,
+#formBox textarea,
+#formBox select {
+  width: 100%;
+  margin-bottom: 1rem;
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+
+#formBox button {
+  width: 100%;
+  background: black;
+  color: white;
+  padding: 0.5rem;
+  border: none;
+  border-radius: 6px;
+  font-weight: bold;
+}
+
+.calendar-header {
+  text-align: center;
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 10px;
+  font-size: 1rem;
+}
+
+.calendar-cell {
+  padding: 1rem;
+  text-align: center;
+  border-radius: 10px;
+  background: rgba(247, 247, 247, 0.9);
+  transition: 0.3s;
+}
+
+.calendar-cell.today {
+  background: #000;
+  color: #fff;
+  font-weight: bold;
+}
+
+.webradio-player {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  background: rgba(0, 0, 0, 0.9);
+  color: #fff;
+  padding: 1rem 2rem;
+  border-radius: 12px;
+  justify-content: center;
+  font-size: 1.1rem;
+}
+
+.webradio-player button {
+  background: #ffff00;
+  border: none;
+  padding: 0.5rem 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  border-radius: 8px;
+}
