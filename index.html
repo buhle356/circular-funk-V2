@@ -7,19 +7,25 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <style>
     body {
-      background-color: #ffe5b4;
+      background-color: #ffe5b4; /* light orange */
       font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
       color: #333;
       overflow-x: hidden;
       min-height: 100vh;
+      padding-bottom: 5rem;
     }
 
     .title-image {
       position: absolute;
       top: 1rem;
       left: 1rem;
-      height: 72px;
+      height: 72px;  /* 20% größer als 60px */
       width: auto;
+      transition: transform 0.3s ease; /* weicher Übergangseffekt beim Hover */
+    }
+
+    .title-image:hover {
+      transform: scale(1.1);  /* Bild wird um 10% größer bei Hover */
     }
 
     .top-right {
@@ -65,8 +71,10 @@
     }
 
     .ticker-bar {
-      margin-top: 8rem; /* Mehr Abstand nach unten */
-      width: 100%;
+      margin-top: 8rem; /* Ticker nach unten verschoben */
+      width: 80%;  /* Schmaler gemacht */
+      margin-left: auto;
+      margin-right: auto;
       background-color: #ffff00;
       z-index: 999;
       height: 2rem;
@@ -130,7 +138,7 @@
   <!-- Titelbild -->
   <img src="schrift.png" alt="Circular Funk" class="title-image" />
 
-  <!-- Oben rechts: Suche, Instagram, Video -->
+  <!-- Oben rechts: Suche, Instagram, WebM-Animation -->
   <div class="top-right">
     <div class="search-bar" onclick="toggleSearch()">Search...</div>
     <input class="search-input" type="text" placeholder="Type to search..." onblur="hideSearch()">
