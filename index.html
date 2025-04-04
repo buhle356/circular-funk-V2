@@ -1,13 +1,261 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Circular Funk</title>
-  </head>
-  <body>
-    <div id="app"></div>
-    <script type="module" src="/main.js"></script>
-  </body>
-</html>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Circular Funk</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+      background-color: white;
+      color: #333;
+      overflow-x: hidden;
+      min-height: 100vh;
+      padding-bottom: 5rem;
+    }
+
+    #bg-video {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      object-fit: cover;
+      z-index: -1;
+      pointer-events: none;
+    }
+
+    .ticker-bar {
+      margin-top: 4.5rem;
+      width: 100%;
+      background-color: #ffff00;
+      z-index: 999;
+      height: 2rem;
+      overflow: hidden;
+    }
+    .ticker-text {
+      display: inline-block;
+      white-space: nowrap;
+      padding-left: 100%;
+      animation: ticker 15s linear infinite;
+      font-weight: bold;
+      font-size: 1rem;
+      color: black;
+    }
+    @keyframes ticker {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-100%); }
+    }
+
+    .title {
+      margin: 1rem;
+      font-size: 2.5rem;
+      font-weight: bold;
+      text-transform: uppercase;
+    }
+    .top-right {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+    .search-bar {
+      cursor: pointer;
+      color: #888;
+      font-style: italic;
+    }
+    .search-input {
+      display: none;
+      padding: 6px 10px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+    }
+    .instagram-icon {
+      width: 30px;
+      height: 30px;
+      fill: black;
+      cursor: pointer;
+      transition: transform 0.3s ease;
+    }
+    .instagram-icon:hover {
+      transform: scale(1.2);
+    }
+
+    .tabs {
+      margin-top: 7rem;
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      font-size: 1.2rem;
+      font-weight: bold;
+      text-transform: uppercase;
+    }
+    .tab-button {
+      padding: 10px 20px;
+      border: 2px solid black;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: 0.3s ease;
+    }
+    .tab-button:hover {
+      background: black;
+      color: white;
+      transform: scale(1.05);
+    }
+
+    .content-container {
+      display: none;
+      margin-top: 2rem;
+      width: 80%;
+      aspect-ratio: 16 / 9;
+      margin-left: auto;
+      margin-right: auto;
+      position: relative;
+      z-index: 100;
+    }
+
+    #formBox {
+      background: white;
+      padding: 2rem;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      width: 50%;
+      margin: 2rem auto;
+      display: none;
+    }
+    #formBox input,
+    #formBox textarea,
+    #formBox select {
+      width: 100%;
+      margin-bottom: 1rem;
+      padding: 0.5rem;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+    }
+    #formBox button {
+      width: 100%;
+      background: black;
+      color: white;
+      padding: 0.5rem;
+      border: none;
+      border-radius: 6px;
+      font-weight: bold;
+    }
+
+    .calendar-header {
+      text-align: center;
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+    }
+    .calendar-grid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 10px;
+      font-size: 1rem;
+    }
+    .calendar-cell {
+      padding: 1rem;
+      text-align: center;
+      border-radius: 10px;
+      background: #f7f7f7;
+      transition: 0.3s;
+    }
+    .calendar-cell.today {
+      background: #000;
+      color: #fff;
+      font-weight: bold;
+    }
+
+    .webradio-player {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      background: #000;
+      color: #fff;
+      padding: 1rem 2rem;
+      border-radius: 12px;
+      justify-content: center;
+      font-size: 1.1rem;
+    }
+    .webradio-player button {
+      background: #ffff00;
+      border: none;
+      padding: 0.5rem 1rem;
+      font-weight: bold;
+      cursor: pointer;
+      border-radius: 8px;
+    }
+  </style>
+</head>
+<body>
+  <!-- Background Video -->
+  <video autoplay loop muted playsinline id="bg-video">
+    <source src="public/animation.webm" type="video/webm">
+    Your browser does not support the video tag.
+  </video>
+
+  <div class="title">CIRCULAR FUNK</div>
+  <div class="top-right">
+    <div class="search-bar" onclick="toggleSearch()">Search...</div>
+    <input class="search-input" type="text" placeholder="Type to search..." onblur="hideSearch()">
+    <a href="https://www.instagram.com/circular_funk/" target="_blank">
+      <svg class="instagram-icon" viewBox="0 0 24 24">
+        <path d="M12 2.163c3.418 0 3.833.013 5.17.075..."/>
+      </svg>
+    </a>
+  </div>
+
+  <div class="ticker-bar">
+    <div class="ticker-text">LIVE NOW: Circular Funk streaming funkadelic beats – Contribute, Watch, Groove, Repeat – Follow us on Instagram @circular_funk – </div>
+  </div>
+
+  <div class="tabs">
+    <div class="tab-button" onclick="showContributeForm()">Magazin</div>
+    <div class="tab-button" onclick="showTwitchStream()">Live</div>
+    <div class="tab-button" onclick="showCalendar()">Events</div>
+    <div class="tab-button" onclick="showArchive()">Archive</div>
+    <div class="tab-button" onclick="showMusic()">Music</div>
+  </div>
+
+  <div class="content-container" id="twitchStream">
+    <div id="twitchEmbed"></div>
+  </div>
+
+  <div class="content-container" id="calendarModal">
+    <div class="calendar-header" id="calendarMonthYear"></div>
+    <div class="calendar-grid" id="calendarDays"></div>
+  </div>
+
+  <div class="content-container" id="archiveContainer">
+    <iframe class="youtube-container" id="latestVideo" src="" allowfullscreen></iframe>
+  </div>
+
+  <div id="formBox">
+    <h4>New Contribution</h4>
+    <input type="text" placeholder="Title">
+    <textarea placeholder="Description" rows="4"></textarea>
+    <select>
+      <option>Live Stream</option>
+      <option>News</option>
+      <option>Ideas</option>
+      <option>Projects</option>
+      <option>Music</option>
+      <option>Calendar</option>
+    </select>
+    <button>Submit</button>
+  </div>
+
+  <div class="content-container" id="musicContainer">
+    <div class="webradio-player">
+      <button id="playButton">▶️ Play</button>
+      <span id="trackInfo">Loading track info...</span>
+    </div>
+    <audio id="webradio" src="https://stream.laut.fm/circularfunk" preload="none"></audio>
+  </div>
+
+  <script src="https://player.twitch.tv/js/embed/v1.js"></script>
+  <script>
+    let twitch
