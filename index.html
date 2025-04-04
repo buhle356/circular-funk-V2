@@ -6,7 +6,7 @@
   <title>Circular Funk</title>
   <style>
     body {
-      background-color: #ffe5b4; /* light orange */
+      background-color: #ffe5b4;
       font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
       color: #333;
       overflow-x: hidden;
@@ -14,15 +14,21 @@
       padding-bottom: 5rem;
     }
 
-    #bg-video {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      object-fit: cover;
-      z-index: -1;
-      pointer-events: none;
+    .title-image {
+      position: absolute;
+      top: 1rem;
+      left: 1rem;
+      height: 60px;
+      width: auto;
+    }
+
+    .corner-animation {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      width: 100px;
+      height: auto;
+      z-index: 10;
     }
 
     .ticker-bar {
@@ -33,6 +39,7 @@
       height: 2rem;
       overflow: hidden;
     }
+
     .ticker-text {
       display: inline-block;
       white-space: nowrap;
@@ -42,17 +49,12 @@
       font-size: 1rem;
       color: black;
     }
+
     @keyframes ticker {
       0% { transform: translateX(0); }
       100% { transform: translateX(-100%); }
     }
 
-    .title {
-      margin: 1rem;
-      font-size: 2.5rem;
-      font-weight: bold;
-      text-transform: uppercase;
-    }
     .top-right {
       position: absolute;
       top: 1rem;
@@ -61,17 +63,20 @@
       align-items: center;
       gap: 1rem;
     }
+
     .search-bar {
       cursor: pointer;
       color: #888;
       font-style: italic;
     }
+
     .search-input {
       display: none;
       padding: 6px 10px;
       border: 1px solid #ccc;
       border-radius: 8px;
     }
+
     .instagram-icon {
       width: 30px;
       height: 30px;
@@ -79,6 +84,7 @@
       cursor: pointer;
       transition: transform 0.3s ease;
     }
+
     .instagram-icon:hover {
       transform: scale(1.2);
     }
@@ -92,6 +98,7 @@
       font-weight: bold;
       text-transform: uppercase;
     }
+
     .tab-button {
       padding: 10px 20px;
       border: 2px solid black;
@@ -99,6 +106,7 @@
       cursor: pointer;
       transition: 0.3s ease;
     }
+
     .tab-button:hover {
       background: black;
       color: white;
@@ -109,6 +117,7 @@
       display: none;
       margin-top: 2rem;
       width: 80%;
+      max-width: 800px;
       aspect-ratio: 16 / 9;
       margin-left: auto;
       margin-right: auto;
@@ -125,6 +134,7 @@
       margin: 2rem auto;
       display: none;
     }
+
     #formBox input,
     #formBox textarea,
     #formBox select {
@@ -134,6 +144,7 @@
       border: 1px solid #ccc;
       border-radius: 6px;
     }
+
     #formBox button {
       width: 100%;
       background: black;
@@ -149,12 +160,14 @@
       font-size: 1.5rem;
       margin-bottom: 1rem;
     }
+
     .calendar-grid {
       display: grid;
       grid-template-columns: repeat(7, 1fr);
       gap: 10px;
       font-size: 1rem;
     }
+
     .calendar-cell {
       padding: 1rem;
       text-align: center;
@@ -162,6 +175,7 @@
       background: #f7f7f7;
       transition: 0.3s;
     }
+
     .calendar-cell.today {
       background: #000;
       color: #fff;
@@ -179,6 +193,7 @@
       justify-content: center;
       font-size: 1.1rem;
     }
+
     .webradio-player button {
       background: #ffff00;
       border: none;
@@ -190,13 +205,15 @@
   </style>
 </head>
 <body>
-  <!-- Hintergrundvideo -->
-  <video autoplay loop muted playsinline id="bg-video">
+
+  <!-- Titelbild -->
+  <img src="schrift.png" alt="Circular Funk" class="title-image" />
+
+  <!-- Kleine Animation oben rechts -->
+  <video autoplay loop muted playsinline class="corner-animation">
     <source src="public/animation.webm" type="video/webm">
-    Your browser does not support the video tag.
   </video>
 
-  <div class="title">CIRCULAR FUNK</div>
   <div class="top-right">
     <div class="search-bar" onclick="toggleSearch()">Search...</div>
     <input class="search-input" type="text" placeholder="Type to search..." onblur="hideSearch()">
@@ -266,6 +283,7 @@
       input.style.display = 'block';
       input.focus();
     }
+
     function hideSearch() {
       const input = document.querySelector('.search-input');
       const bar = document.querySelector('.search-bar');
@@ -279,6 +297,7 @@
       const target = document.getElementById(id);
       if (target) target.style.display = 'block';
     }
+
     function showTwitchStream() {
       showTab('twitchStream');
       if (!twitchInitialized) {
@@ -291,13 +310,24 @@
         twitchInitialized = true;
       }
     }
+
     function showContributeForm() {
       document.querySelectorAll('.content-container').forEach(el => el.style.display = 'none');
       document.getElementById('formBox').style.display = 'block';
     }
-    function showCalendar() { showTab('calendarModal'); generateCalendar(); }
-    function showArchive() { showTab('archiveContainer'); }
-    function showMusic() { showTab('musicContainer'); }
+
+    function showCalendar() {
+      showTab('calendarModal');
+      generateCalendar();
+    }
+
+    function showArchive() {
+      showTab('archiveContainer');
+    }
+
+    function showMusic() {
+      showTab('musicContainer');
+    }
 
     function generateCalendar() {
       const daysContainer = document.getElementById("calendarDays");
@@ -306,7 +336,8 @@
       const month = date.getMonth();
       const year = date.getFullYear();
       const today = date.getDate();
-      const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+      const monthNames = ["January", "February", "March", "April", "May", "June",
+        "July", "August", "September", "October", "November", "December"];
       header.textContent = `${monthNames[month]} ${year}`;
       const firstDay = new Date(year, month, 1).getDay();
       const totalDays = new Date(year, month + 1, 0).getDate();
@@ -320,10 +351,10 @@
       }
     }
 
-    // Webradio Player Functionality
     const audio = document.getElementById("webradio");
     const playButton = document.getElementById("playButton");
     const trackInfo = document.getElementById("trackInfo");
+
     playButton.addEventListener("click", () => {
       if (audio.paused) {
         audio.play();
@@ -333,6 +364,7 @@
         playButton.textContent = "▶️ Play";
       }
     });
+
     fetch("https://api.laut.fm/station/circularfunk/current_song")
       .then(res => res.json())
       .then(data => {
